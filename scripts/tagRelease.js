@@ -37,8 +37,8 @@ const tagVersion = `${version}.${buildNumber}`
 
 
 // update files associated with the tag
-packageJson.version = tagVersion;
-fs.writeFileSync('../package.json', JSON.stringify(packageJson, null, 2), 'utf-8')
+packageJson.version = tagVersion
+fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf-8')
 
 if (exec(`git commit -a -m "[${tagVersion}] Bump version numbers"`).code) {
   echo('failed to commit');
