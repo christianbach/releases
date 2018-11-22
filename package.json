@@ -1,6 +1,6 @@
 {
   "name": "releases",
-  "version": "1.0.5.16",
+  "version": "1.0.5.17",
   "main": "index.js",
   "repository": "git@github.com:christianbach/releases.git",
   "author": "Christian Bach <christian.bach@polyester.se>",
