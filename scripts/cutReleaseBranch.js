@@ -2,7 +2,7 @@
 const { cat, echo, exec, exit } = require('shelljs')
 const packageJson = JSON.parse(cat('package.json'))
 const version = packageJson.version
-const releaseBranch = 'release/' + version
+const releaseBranch = 'stable/' + version
 
 let branch = exec('git symbolic-ref --short HEAD', {
   silent: true
@@ -16,14 +16,14 @@ if (branch !== 'master') {
 let clean = exec('git status --porcelain', {
   silent: true,
 }).stdout.trim()
-console.log(clean, clean.length)
-if (clean !== null) {
-  echo('Master has to be clean, you have uncommited files');
-  exit(1)
-}
+
+// if (clean.length > 0) {
+//   echo('Master has to be clean, you have uncommited files');
+//   exit(1);
+// }
 
 echo(`Creating branch: ${releaseBranch}`)
-if (exec(`git checkout - b ${releaseBranch}`).code) {
+if (exec(`git checkout -b ${releaseBranch}`).code) {
   echo(
     `failed to checkout ${releaseBranch}, are you sure this release wasn't cut earlier?`
   )
