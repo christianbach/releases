@@ -2,7 +2,8 @@
 const { cat, echo, exec, exit } = require('shelljs')
 const packageJson = JSON.parse(cat('package.json'))
 const version = packageJson.version
-const releaseBranch = 'stable/' + version
+const releseType = 'release'
+const remote = 'origin'
 
 let branch = exec('git symbolic-ref --short HEAD', {
   silent: true
@@ -30,7 +31,13 @@ if (buildNumber === 0) {
    echo(`failed to get a build number?`)
    exit(1);
 }
-const tag = `release/${version}.${buildNumber}`
+const tagVersion = `${version}.${buildNumber}`
+if (exec(`git commit -a -m "[${tagVersion}] Bump version numbers"`).code) {
+  echo('failed to commit');
+  exit(1);
+}
+
+const tag = `${releseType}/${tagVersion}`;
 if (exec(`git tag ${tag}`).code) {
   echo(`failed to tag ${tag}, are you sure this release wasn't made earlier?`)
   echo('You may want to rollback the last commit')
@@ -38,5 +45,6 @@ if (exec(`git tag ${tag}`).code) {
   exit(1)
 }
 
-exec(`git push origin ${tag}`)
+exec(`git push ${remote} ${tag}`);
+exec(`git push ${remote} ${branch} --follow-tags`)
 exit(0)
