@@ -2,8 +2,6 @@
 const fs = require('fs');
 const { cat, echo, exec, exit } = require('shelljs');
 
-let packageJson = JSON.parse(cat('package.json'));
-const version = packageJson.version;
 const releseType = 'release';
 const remote = 'origin';
 
@@ -35,6 +33,8 @@ if (buildNumber === 0) {
   echo(`failed to get a build number?`);
   exit(1);
 }
+
+const version = branch.replace('stable/', '');
 const tagVersion = `${version}.${buildNumber}`;
 
 // update files associated with the tag
