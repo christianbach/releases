@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const { cat, echo, exec, exit } = require('shelljs')
-const packageJson = JSON.parse(cat('package.json'))
+let packageJson = JSON.parse(cat('package.json'))
 const version = packageJson.version
 const releseType = 'release'
 const remote = 'origin'
@@ -32,6 +32,12 @@ if (buildNumber === 0) {
    exit(1);
 }
 const tagVersion = `${version}.${buildNumber}`
+
+
+// update files associated with the tag
+packageJson.version = tagVersion;
+fs.writeFileSync('../package.json', JSON.stringify(packageJson, null, 2), 'utf-8')
+
 if (exec(`git commit -a -m "[${tagVersion}] Bump version numbers"`).code) {
   echo('failed to commit');
   exit(1);
