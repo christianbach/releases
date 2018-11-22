@@ -13,6 +13,15 @@ if (branch !== 'master') {
   exit(1)
 }
 
+let clean = exec('git status --porcelain', {
+  silent: true,
+}).stdout.trim()
+console.log(clean, clean.length)
+if (clean !== null) {
+  echo('Master has to be clean, you have uncommited files');
+  exit(1)
+}
+
 echo(`Creating branch: ${releaseBranch}`)
 if (exec(`git checkout - b ${releaseBranch}`).code) {
   echo(
