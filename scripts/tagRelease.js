@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+const fs = require('fs')
 const { cat, echo, exec, exit } = require('shelljs')
+
 let packageJson = JSON.parse(cat('package.json'))
 const version = packageJson.version
 const releseType = 'release'
