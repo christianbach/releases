@@ -1,0 +1,11 @@
+{
+  "name": "releases",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:christianbach/releases.git",
+  "author": "Christian Bach <christian.bach@polyester.se>",
+  "license": "MIT",
+  "devDependencies": {
+    "shelljs": "^0.8.3"
+  }
+}
