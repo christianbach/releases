@@ -38,6 +38,7 @@ const version = branch.replace('stable/', '');
 const tagVersion = `${version}.${buildNumber}`;
 
 // update files associated with the tag
+let packageJson = JSON.parse(cat('package.json'));
 packageJson.version = tagVersion;
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf-8');
 
