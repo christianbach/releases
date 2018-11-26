@@ -25,7 +25,7 @@ if (clean.length > 0) {
   exit(1);
 }
 
-const buildNumber = parseInt(
+let buildNumber = parseInt(
   exec('git rev-list HEAD --count', {
     silent: true,
   }).stdout.trim()
@@ -35,11 +35,29 @@ if (buildNumber === 0) {
   echo(`failed to get a build number?`);
   exit(1);
 }
+buildNumber = buildNumber + 1 // Since the CI will build on this release, offset it with 1
+
 const tagVersion = `${version}.${buildNumber}`;
 
 // update files associated with the tag
 packageJson.version = tagVersion;
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf-8');
+
+// write version and buildnumber, this way we can store information for the CI to use
+fs.writeFileSync(
+  "build.json",
+  JSON.stringify(
+    {
+      build: buildNumber,
+      version: version
+    },
+    null,
+    2
+  ),
+  "utf-8"
+);
+
+
 
 if (exec(`git commit -a -m "[${tagVersion}] Bump version numbers"`).code) {
   echo('failed to commit');
